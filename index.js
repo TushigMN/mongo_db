@@ -13,10 +13,10 @@ const db = await client.db("sample_mflix");
 const collection = await db.collection("movies");
 
 app.get("/task1", async (req, res) => {
-  // select movies.id from movies limit 10
+  const { title } = req.query;
 
   const movie = await collection.findOne({
-    title: { $eq: "The Great Train Robbery" },
+    title: { $eq: title },
   });
 
   res.send(movie);
