@@ -45,6 +45,17 @@ app.get("/task3", async (req, res) => {
   res.send(movie);
 });
 
+app.get("/task4", async (req, res) => {
+  const { year = 1900, page = 0, limit = 0 } = req.query;
+
+  const movies = await collection
+    .find({ year: { $gt: parseInt(year) } })
+    .skip((page - 1) * parseInt(limit))
+    .toArray();
+
+  res.send(movies);
+});
+
 app.listen(port, async () => {
   await client
     .connect()
