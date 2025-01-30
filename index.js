@@ -67,6 +67,18 @@ app.get("/task5", async (req, res) => {
   res.send(movies);
 });
 
+app.get("/task6", async (req, res) => {
+  const { minVotes = 10000, page = 0, limit = 0 } = req.query;
+
+  const movies = await collection
+    .find({ "imdb.votes": { $gt: parseInt(minVotes) } })
+    .skip((page - 1) * parseInt(limit))
+    .limit(5)
+    .toArray();
+
+  res.send(movies);
+});
+
 app.listen(port, async () => {
   await client
     .connect()
