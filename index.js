@@ -56,6 +56,17 @@ app.get("/task4", async (req, res) => {
   res.send(movies);
 });
 
+app.get("/task5", async (req, res) => {
+  const { ratings = [7.4, 6.5], page = 0, limit = 0 } = req.query;
+
+  const movies = await collection
+    .find({ "imdb.rating": { $in: ratings } })
+    .skip((page - 1) * parseInt(limit))
+    .toArray();
+
+  res.send(movies);
+});
+
 app.listen(port, async () => {
   await client
     .connect()
