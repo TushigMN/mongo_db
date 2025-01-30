@@ -35,6 +35,16 @@ app.get("/task2", async (req, res) => {
   res.send(movies);
 });
 
+app.get("/task3", async (req, res) => {
+  const { imdbId } = req.query;
+
+  const movie = await collection.findOne({
+    "imdb.id": { $eq: parseInt(imdbId) },
+  });
+
+  res.send(movie);
+});
+
 app.listen(port, async () => {
   await client
     .connect()
