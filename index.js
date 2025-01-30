@@ -22,6 +22,19 @@ app.get("/task1", async (req, res) => {
   res.send(movie);
 });
 
+app.get("/task2", async (req, res) => {
+  const { genre, page = 0, limit = 0 } = req.query;
+
+  const movies = await collection
+    .find({ genres: { $eq: genre } })
+    .project({ title: 1, genres: 1 })
+    .skip((page - 1) * parseInt(limit))
+    .limit(parseInt(limit))
+    .toArray();
+
+  res.send(movies);
+});
+
 app.listen(port, async () => {
   await client
     .connect()
