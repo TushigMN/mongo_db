@@ -79,6 +79,17 @@ app.get("/task6", async (req, res) => {
   res.send(movies);
 });
 
+app.get("/task7", async (req, res) => {
+  const { maxRuntime = 90, page = 0, limit = 0 } = req.query;
+
+  const movies = await collection
+    .find({ runtime: { $lt: parseInt(maxRuntime) } })
+    .skip((page - 1) * parseInt(limit))
+    .toArray();
+
+  res.send(movies);
+});
+
 app.listen(port, async () => {
   await client
     .connect()
