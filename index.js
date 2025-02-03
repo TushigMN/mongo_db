@@ -125,6 +125,19 @@ app.get("/task10", async (req, res) => {
 
   res.send(movies);
 });
+
+app.get("/task11", async (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+
+  const movies = await collection
+    .find({})
+    .skip((page - 1) * parseInt(limit))
+    .limit(10)
+    .toArray();
+
+  res.send(movies);
+});
+
 app.listen(port, async () => {
   await client
     .connect()
