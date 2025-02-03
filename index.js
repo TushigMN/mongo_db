@@ -90,6 +90,17 @@ app.get("/task7", async (req, res) => {
   res.send(movies);
 });
 
+app.get("/task8", async (req, res) => {
+  const { director, page = 0, limit = 0 } = req.query;
+
+  const movies = await collection
+    .find({ directors: { $in: [director] } })
+    .skip((page - 1) * parseInt(limit))
+    .toArray();
+
+  res.send(movies);
+});
+
 app.listen(port, async () => {
   await client
     .connect()
