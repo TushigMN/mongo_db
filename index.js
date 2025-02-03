@@ -138,6 +138,18 @@ app.get("/task11", async (req, res) => {
   res.send(movies);
 });
 
+app.get("/task12", async (req, res) => {
+  const { minWins = 1, page = 1, limit = 10 } = req.query;
+
+  const movies = await collection
+    .find({ "awards.wins": { $gt: parseInt(minWins) } })
+    .skip((page - 1) * parseInt(limit))
+    .limit(limit)
+    .toArray();
+
+  res.send(movies);
+});
+
 app.listen(port, async () => {
   await client
     .connect()
