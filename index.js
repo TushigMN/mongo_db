@@ -195,6 +195,17 @@ app.get("/task16", async (req, res) => {
     .toArray();
   res.send(movies);
 });
+app.get("/task17", async (req, res) => {
+  const { keyword, page = 1, limit = 10 } = req.query;
+
+  const movies = await collection
+    .find({ plot: { $regex: /greedy tycoon/ } })
+    .skip((page - 1) * parseInt(limit))
+    .limit(limit)
+    .toArray();
+
+  res.send(movies);
+});
 
 app.listen(port, async () => {
   await client
