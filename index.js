@@ -149,7 +149,17 @@ app.get("/task12", async (req, res) => {
 
   res.send(movies);
 });
+app.get("/task13", async (req, res) => {
+  const { language, page = 1, limit = 10 } = req.query;
 
+  const movies = await collection
+    .find({ language: { $in: [language] } })
+    .skip((page - 1) * parseInt(limit))
+    .limit(limit)
+    .toArray();
+
+  res.send(movies);
+});
 app.listen(port, async () => {
   await client
     .connect()
