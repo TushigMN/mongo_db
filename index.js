@@ -214,6 +214,17 @@ app.get("/task18", async (req, res) => {
 
   res.send({ movies });
 });
+app.get("/task19", async (req, res) => {
+  const { noVotes, page = 1, limit = 10 } = req.query;
+
+  const movies = await collection
+    .find({ "imdb.Votes": { $eq: noVotes } })
+    .skip((page - 1) * parseInt(limit))
+    .limit(limit)
+    .toArray();
+
+  res.send(movies);
+});
 
 app.listen(port, async () => {
   await client
