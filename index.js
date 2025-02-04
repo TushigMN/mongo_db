@@ -160,6 +160,19 @@ app.get("/task13", async (req, res) => {
 
   res.send(movies);
 });
+
+app.get("/task14", async (req, res) => {
+  const { minFresh = 5, page = 1, limit = 10 } = req.query;
+
+  const movies = await collection
+    .find({ "tomatoes.fresh": { $gt: parseInt(minFresh) } })
+    .skip((page - 1) * parseInt(limit))
+    .limit(limit)
+    .toArray();
+
+  res.send(movies);
+});
+
 app.listen(port, async () => {
   await client
     .connect()
