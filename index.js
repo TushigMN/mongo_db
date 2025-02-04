@@ -173,6 +173,19 @@ app.get("/task14", async (req, res) => {
   res.send(movies);
 });
 
+app.get("/task15", async (req, res) => {
+  const { genre, year = 1900, page = 1, limit = 15 } = req.query;
+
+  const query = { genres: genre };
+  const movies = await collection
+    .find({ year: { $gt: parseInt(year) } })
+    .skip((page - 1) * parseInt(limit))
+    .limit(limit)
+    .toArray();
+
+  res.send(movies);
+});
+
 app.listen(port, async () => {
   await client
     .connect()
