@@ -207,6 +207,14 @@ app.get("/task17", async (req, res) => {
   res.send(movies);
 });
 
+app.get("/task18", async (req, res) => {
+  const { genres } = req.query;
+
+  const movies = await collection.countDocuments({ genres }, { hint: "_id_" });
+
+  res.send({ movies });
+});
+
 app.listen(port, async () => {
   await client
     .connect()
