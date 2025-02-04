@@ -185,6 +185,16 @@ app.get("/task15", async (req, res) => {
 
   res.send(movies);
 });
+app.get("/task16", async (req, res) => {
+  const { castMember, page = 1, limit = 10 } = req.query;
+
+  const movies = await collection
+    .find({ "cast.member": { $in: [castMember] } })
+    .skip((page - 1) * parseInt(limit))
+    .limit(limit)
+    .toArray();
+  res.send(movies);
+});
 
 app.listen(port, async () => {
   await client
